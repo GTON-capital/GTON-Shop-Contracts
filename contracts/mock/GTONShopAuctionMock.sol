@@ -2,9 +2,9 @@
 
 pragma solidity 0.6.12;
 
-import "../FantomAuction.sol";
+import "../GTONShopAuction.sol";
 
-contract FantomAuctionMock is FantomAuction {
+contract GTONShopAuctionMock is GTONShopAuction {
     uint256 public nowOverride;
 
     constructor(address payable _platformReserveAddress) public {}

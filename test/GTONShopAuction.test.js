@@ -10,13 +10,13 @@ const {
   
   const {expect} = require('chai');
 
-  const FantomNFT = artifacts.require('FantomNifty');
-  const FantomAuction = artifacts.require('FantomAuctionMock');
-  const FantomAuctionReal = artifacts.require('FantomAuction');
+  const GTONShopNFT = artifacts.require('GTONShopNifty');
+  const GTONShopAuction = artifacts.require('GTONShopAuctionMock');
+  const GTONShopAuctionReal = artifacts.require('GTONShopAuction');
   const BiddingContractMock = artifacts.require('BiddingContractMock');
   const MockERC20 = artifacts.require('MockERC20');
   
-  contract('FantomAuction', (accounts) => {
+  contract('GTONShopAuction', (accounts) => {
     const [admin, smartContract, platformFeeAddress, minter, owner, designer, bidder, bidder2, provider] = accounts;
   
     const ZERO = new BN('0');
@@ -28,7 +28,7 @@ const {
     const randomTokenURI = 'rand';
   
     beforeEach(async () => {  
-      this.token = await FantomNFT.new({ from: admin });
+      this.token = await GTONShopNFT.new({ from: admin });
   
       this.mockToken = await MockERC20.new(
         'Mock ERC20',
@@ -37,7 +37,7 @@ const {
         {from: minter}
       );
   
-      this.auction = await FantomAuction.new(
+      this.auction = await GTONShopAuction.new(
         platformFeeAddress,
         {from: admin}
       );
@@ -49,11 +49,11 @@ const {
     describe('Contract deployment', () => {  
       it('Reverts when platform fee recipient is zero', async () => {
         await expectRevert(
-          FantomAuction.new(
+          GTONShopAuction.new(
             constants.ZERO_ADDRESS,
             {from: admin}
           ),
-          "FantomAuction: Invalid Platform Fee Recipient"
+          "GTONShopAuction: Invalid Platform Fee Recipient"
         );
       });
     });
@@ -69,7 +69,7 @@ const {
           await this.auction.setNowOverride('12');
           await expectRevert(
             this.auction.createAuction(this.token.address, TOKEN_ONE_ID, '1', '0', '10', {from: minter}),
-            "FantomAuction.createAuction: End time passed. Nobody can bid."
+            "GTONShopAuction.createAuction: End time passed. Nobody can bid."
           );
         });
   
@@ -77,7 +77,7 @@ const {
           await this.auction.setNowOverride('2');
           await expectRevert(
             this.auction.createAuction(this.token.address, TOKEN_ONE_ID, '1', '1', '0', {from: minter}),
-            'FantomAuction.createAuction: End time must be greater than start'
+            'GTONShopAuction.createAuction: End time must be greater than start'
           );
         });
   
@@ -87,7 +87,7 @@ const {
   
           await expectRevert(
             this.auction.createAuction(this.token.address, TOKEN_ONE_ID, '1', '1', '3', {from: minter}),
-            'FantomAuction.createAuction: Cannot relist'
+            'GTONShopAuction.createAuction: Cannot relist'
           );
         });
   
@@ -99,7 +99,7 @@ const {
   
           await expectRevert(
             this.auction.createAuction(this.token.address, TOKEN_TWO_ID, '1', '1', '3', {from: minter}),
-            'FantomAuction.createAuction: Not owner and or contract not approved'
+            'GTONShopAuction.createAuction: Not owner and or contract not approved'
           );
         });
   
@@ -157,21 +157,21 @@ const {
           this.biddingContract = await BiddingContractMock.new(this.auction.address);
           await expectRevert(
             this.biddingContract.bid(this.token.address, TOKEN_ONE_ID, {from: bidder, value: ether('0.2')}),
-            "FantomAuction.placeBid: No contracts permitted"
+            "GTONShopAuction.placeBid: No contracts permitted"
           );
         });
   
         it('will fail with 721 token not on auction', async () => {
           await expectRevert(
             this.auction.placeBid(this.token.address, 999, {from: bidder, value: 1}),
-            'FantomAuction.placeBid: Bidding outside of the auction window'
+            'GTONShopAuction.placeBid: Bidding outside of the auction window'
           );
         });
   
         it('will fail with valid token but no auction', async () => {
           await expectRevert(
             this.auction.placeBid(this.token.address, TOKEN_TWO_ID, {from: bidder, value: 1}),
-            'FantomAuction.placeBid: Bidding outside of the auction window'
+            'GTONShopAuction.placeBid: Bidding outside of the auction window'
           );
         });
   
@@ -179,7 +179,7 @@ const {
           await this.auction.setNowOverride('11');
           await expectRevert(
             this.auction.placeBid(this.token.address, TOKEN_ONE_ID, {from: bidder, value: 1}),
-            'FantomAuction.placeBid: Bidding outside of the auction window'
+            'GTONShopAuction.placeBid: Bidding outside of the auction window'
           );
         });
   
@@ -197,7 +197,7 @@ const {
   
           await expectRevert(
             this.auction.placeBid(this.token.address, TOKEN_ONE_ID, {from: bidder, value: ether('0.2')}),
-            'FantomAuction.placeBid: Failed to outbid highest bidder'
+            'GTONShopAuction.placeBid: Failed to outbid highest bidder'
           );
         });
       });
@@ -322,14 +322,14 @@ const {
       it('fails with withdrawing a bid which does not exist', async () => {
         await expectRevert(
           this.auction.withdrawBid(this.token.address, 999, {from: bidder2}),
-          'FantomAuction.withdrawBid: You are not the highest bidder'
+          'GTONShopAuction.withdrawBid: You are not the highest bidder'
         );
       });
   
       it('fails with withdrawing a bid which you did not make', async () => {
         await expectRevert(
           this.auction.withdrawBid(this.token.address, TOKEN_ONE_ID, {from: bidder2}),
-          'FantomAuction.withdrawBid: You are not the highest bidder'
+          'GTONShopAuction.withdrawBid: You are not the highest bidder'
         );
       });
   
@@ -338,7 +338,7 @@ const {
         await this.auction.setNowOverride('5');
         await expectRevert(
           this.auction.withdrawBid(this.token.address, TOKEN_ONE_ID, {from: bidder}),
-          "FantomAuction.withdrawBid: Cannot withdraw until lock time has passed"
+          "GTONShopAuction.withdrawBid: Cannot withdraw until lock time has passed"
         );
       });
   
@@ -347,7 +347,7 @@ const {
         await this.auction.updateBidWithdrawalLockTime('0', {from: admin});
         await expectRevert(
           this.auction.withdrawBid(this.token.address, TOKEN_ONE_ID, {from: bidder}),
-          "FantomAuction.withdrawBid: Past auction end"
+          "GTONShopAuction.withdrawBid: Past auction end"
         );
       });
   
@@ -412,14 +412,14 @@ const {
         it('cannot result if not an owner', async () => {
           await expectRevert(
             this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {from: bidder}),
-            'FantomAuction.resultAuction: Sender must be item owner'
+            'GTONShopAuction.resultAuction: Sender must be item owner'
           );
         });
   
         it('cannot result if auction has not ended', async () => {
           await expectRevert(
             this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {from: minter}),
-            'FantomAuction.resultAuction: The auction has not ended'
+            'GTONShopAuction.resultAuction: The auction has not ended'
           );
         });
   
@@ -428,7 +428,7 @@ const {
           await this.auction.setNowOverride('12');
           await expectRevert(
             this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {from: minter}),
-            'FantomAuction.resultAuction: reserve not reached'
+            'GTONShopAuction.resultAuction: reserve not reached'
           );
         });
   
@@ -438,7 +438,7 @@ const {
           await this.auction.setNowOverride('12');
           await expectRevert(
             this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {from: minter}),
-            'FantomAuction.resultAuction: no open bids'
+            'GTONShopAuction.resultAuction: no open bids'
           );
         });
   
@@ -452,7 +452,7 @@ const {
           // try result it again
           await expectRevert(
             this.auction.resultAuction(this.token.address, TOKEN_ONE_ID, {from: minter}),
-            'FantomAuction.resultAuction: Sender must be item owner'
+            'GTONShopAuction.resultAuction: Sender must be item owner'
           );
         });
       });
@@ -557,7 +557,7 @@ const {
         it('cannot cancel if not an admin', async () => {
           await expectRevert(
             this.auction.cancelAuction(this.token.address, TOKEN_ONE_ID, {from: bidder}),
-            'FantomAuction.cancelAuction: Sender must be item owner'
+            'GTONShopAuction.cancelAuction: Sender must be item owner'
           );
         });
   
@@ -569,7 +569,7 @@ const {
   
           await expectRevert(
             this.auction.cancelAuction(this.token.address, TOKEN_ONE_ID, {from: minter}),
-            'FantomAuction.cancelAuction: Sender must be item owner'
+            'GTONShopAuction.cancelAuction: Sender must be item owner'
           );
         });
   
@@ -581,7 +581,7 @@ const {
   
           await expectRevert(
             this.auction.cancelAuction(this.token.address, TOKEN_ONE_ID, {from: minter}),
-            'FantomAuction.cancelAuction: Sender must be item owner'
+            'GTONShopAuction.cancelAuction: Sender must be item owner'
           );
         });
   

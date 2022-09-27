@@ -9,10 +9,10 @@ const { ZERO_ADDRESS } = constants;
 
 const { expect } = require('chai');
 
-const FantomNFT = artifacts.require('FantomNFT');
-const FantomMarketplace = artifacts.require('FantomMarketplace');
+const GTONShopNFT = artifacts.require('GTONShopNFT');
+const GTONShopMarketplace = artifacts.require('GTONShopMarketplace');
 
-contract('Core ERC721 tests for FantomNFT', function ([
+contract('Core ERC721 tests for GTONShopNFT', function ([
     owner,
     minter,
     buyer,
@@ -30,8 +30,8 @@ contract('Core ERC721 tests for FantomNFT', function ([
     const randomTokenURI = 'ipfs';
   
     beforeEach(async function () {
-      this.nft = await FantomNFT.new({ from: owner });
-      this.marketplace = await FantomMarketplace.new(
+      this.nft = await GTONShopNFT.new({ from: owner });
+      this.marketplace = await GTONShopMarketplace.new(
         '0xFC00FACE00000000000000000000000000000000',
         platformFee,
         { from: owner }

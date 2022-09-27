@@ -2,12 +2,12 @@
 
 pragma solidity 0.6.12;
 
-import "../FantomAuction.sol";
+import "../GTONShopAuction.sol";
 
 contract BiddingContractMock {
-    FantomAuction public auctionContract;
+    GTONShopAuction public auctionContract;
 
-    constructor(FantomAuction _auctionContract) public {
+    constructor(GTONShopAuction _auctionContract) public {
         auctionContract = _auctionContract;
     }
 

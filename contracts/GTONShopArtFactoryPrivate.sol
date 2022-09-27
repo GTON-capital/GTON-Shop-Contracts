@@ -3,20 +3,17 @@
 pragma solidity 0.6.12;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./FantomNFTTradable.sol";
+import "./GTONShopArtTradablePrivate.sol";
 
-contract FantomNFTFactory is Ownable {
+contract GTONShopArtFactoryPrivate is Ownable {
     /// @dev Events of the contract
     event ContractCreated(address creator, address nft);
     event ContractDisabled(address caller, address nft);
 
-    /// @notice Fantom auction contract address;
-    address public auction;
-
-    /// @notice Fantom marketplace contract address;
+    /// @notice GTONShop marketplace contract address;
     address public marketplace;
 
-    /// @notice Fantom bundle marketplace contract address;
+    /// @notice GTONShop bundle marketplace contract address;
     address public bundleMarketplace;
 
     /// @notice NFT mint fee
@@ -31,32 +28,21 @@ contract FantomNFTFactory is Ownable {
     /// @notice NFT Address => Bool
     mapping(address => bool) public exists;
 
-    bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
-    
+    bytes4 private constant INTERFACE_ID_ERC1155 = 0xd9b67a26;
+
     /// @notice Contract constructor
     constructor(
-        address _auction,
         address _marketplace,
         address _bundleMarketplace,
         uint256 _mintFee,
         address payable _feeRecipient,
         uint256 _platformFee
     ) public {
-        auction = _auction;
         marketplace = _marketplace;
         bundleMarketplace = _bundleMarketplace;
         mintFee = _mintFee;
         feeRecipient = _feeRecipient;
         platformFee = _platformFee;
-    }
-
-    /**
-    @notice Update auction contract
-    @dev Only admin
-    @param _auction address the auction contract address to set
-    */
-    function updateAuction(address _auction) external onlyOwner {
-        auction = _auction;
     }
 
     /**
@@ -110,7 +96,7 @@ contract FantomNFTFactory is Ownable {
         feeRecipient = _feeRecipient;
     }
 
-    /// @notice Method for deploy new FantomNFTTradable contract
+    /// @notice Method for deploy new GTONShopArtTradablePrivate contract
     /// @param _name Name of NFT contract
     /// @param _symbol Symbol of NFT contract
     function createNFTContract(string memory _name, string memory _symbol)
@@ -122,14 +108,13 @@ contract FantomNFTFactory is Ownable {
         (bool success,) = feeRecipient.call{value: msg.value}("");
         require(success, "Transfer failed");
 
-        FantomNFTTradable nft = new FantomNFTTradable(
+        GTONShopArtTradablePrivate nft = new GTONShopArtTradablePrivate(
             _name,
             _symbol,
-            auction,
-            marketplace,
-            bundleMarketplace,
             mintFee,
-            feeRecipient
+            feeRecipient,
+            marketplace,
+            bundleMarketplace
         );
         exists[address(nft)] = true;
         nft.transferOwnership(_msgSender());
@@ -137,25 +122,25 @@ contract FantomNFTFactory is Ownable {
         return address(nft);
     }
 
-    /// @notice Method for registering existing FantomNFTTradable contract
+    /// @notice Method for registering existing GTONShopArtTradable contract
     /// @param  tokenContractAddress Address of NFT contract
     function registerTokenContract(address tokenContractAddress)
         external
         onlyOwner
     {
-        require(!exists[tokenContractAddress], "NFT contract already registered");
-        require(IERC165(tokenContractAddress).supportsInterface(INTERFACE_ID_ERC721), "Not an ERC721 contract");
+        require(!exists[tokenContractAddress], "Art contract already registered");
+        require(IERC165(tokenContractAddress).supportsInterface(INTERFACE_ID_ERC1155), "Not an ERC1155 contract");
         exists[tokenContractAddress] = true;
         emit ContractCreated(_msgSender(), tokenContractAddress);
     }
 
-    /// @notice Method for disabling existing FantomNFTTradable contract
+    /// @notice Method for disabling existing GTONShopArtTradable contract
     /// @param  tokenContractAddress Address of NFT contract
     function disableTokenContract(address tokenContractAddress)
         external
         onlyOwner
     {
-        require(exists[tokenContractAddress], "NFT contract is not registered");
+        require(exists[tokenContractAddress], "Art contract is not registered");
         exists[tokenContractAddress] = false;
         emit ContractDisabled(_msgSender(), tokenContractAddress);
     }

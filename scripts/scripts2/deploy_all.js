@@ -9,14 +9,14 @@ async function main(network) {
     const deployerAddress = await deployer.getAddress();
     console.log(`Deployer's address: `, deployerAddress);
   
-    const { TREASURY_ADDRESS, PLATFORM_FEE, WRAPPED_FTM_MAINNET, WRAPPED_FTM_TESTNET } = require('../constants');
+    const { TREASURY_ADDRESS, PLATFORM_FEE, WRAPPED_GCD_MAINNET, WRAPPED_GCD_TESTNET } = require('../constants');
   
     ////////////
     const Artion = await ethers.getContractFactory('Artion');
     const artion = await Artion.deploy(TREASURY_ADDRESS, '2000000000000000000');
   
     await artion.deployed();  
-    console.log('FantomArtion deployed at', artion.address);
+    console.log('GTONShopArtion deployed at', artion.address);
     ///////////
 
     //////////
@@ -32,11 +32,11 @@ async function main(network) {
     //////////
 
     /////////
-    const Marketplace = await ethers.getContractFactory('FantomMarketplace');
+    const Marketplace = await ethers.getContractFactory('GTONShopMarketplace');
     const marketplaceImpl = await Marketplace.deploy();
     await marketplaceImpl.deployed();
 
-    console.log('FantomMarketplace deployed to:', marketplaceImpl.address);
+    console.log('GTONShopMarketplace deployed to:', marketplaceImpl.address);
     
     const marketplaceProxy = await AdminUpgradeabilityProxyFactory.deploy(
         marketplaceImpl.address,
@@ -46,7 +46,7 @@ async function main(network) {
     await marketplaceProxy.deployed();
     console.log('Marketplace Proxy deployed at ', marketplaceProxy.address);
     const MARKETPLACE_PROXY_ADDRESS = marketplaceProxy.address;
-    const marketplace = await ethers.getContractAt('FantomMarketplace', marketplaceProxy.address);
+    const marketplace = await ethers.getContractAt('GTONShopMarketplace', marketplaceProxy.address);
     
     await marketplace.initialize(TREASURY_ADDRESS, PLATFORM_FEE);
     console.log('Marketplace Proxy initialized');
@@ -55,11 +55,11 @@ async function main(network) {
 
     /////////
     const BundleMarketplace = await ethers.getContractFactory(
-        'FantomBundleMarketplace'
+        'GTONShopBundleMarketplace'
       );
     const bundleMarketplaceImpl = await BundleMarketplace.deploy();
     await bundleMarketplaceImpl.deployed();
-    console.log('FantomBundleMarketplace deployed to:', bundleMarketplaceImpl.address);
+    console.log('GTONShopBundleMarketplace deployed to:', bundleMarketplaceImpl.address);
     
     const bundleMarketplaceProxy = await AdminUpgradeabilityProxyFactory.deploy(
         bundleMarketplaceImpl.address,
@@ -69,7 +69,7 @@ async function main(network) {
     await bundleMarketplaceProxy.deployed();
     console.log('Bundle Marketplace Proxy deployed at ', bundleMarketplaceProxy.address);  
     const BUNDLE_MARKETPLACE_PROXY_ADDRESS = bundleMarketplaceProxy.address;
-    const bundleMarketplace = await ethers.getContractAt('FantomBundleMarketplace', bundleMarketplaceProxy.address);
+    const bundleMarketplace = await ethers.getContractAt('GTONShopBundleMarketplace', bundleMarketplaceProxy.address);
     
     await bundleMarketplace.initialize(TREASURY_ADDRESS, PLATFORM_FEE);
     console.log('Bundle Marketplace Proxy initialized');
@@ -77,10 +77,10 @@ async function main(network) {
     ////////
 
     ////////
-    const Auction = await ethers.getContractFactory('FantomAuction');
+    const Auction = await ethers.getContractFactory('GTONShopAuction');
     const auctionImpl = await Auction.deploy();
     await auctionImpl.deployed();
-    console.log('FantomAuction deployed to:', auctionImpl.address);
+    console.log('GTONShopAuction deployed to:', auctionImpl.address);
 
     const auctionProxy = await AdminUpgradeabilityProxyFactory.deploy(
         auctionImpl.address,
@@ -91,7 +91,7 @@ async function main(network) {
     await auctionProxy.deployed();
     console.log('Auction Proxy deployed at ', auctionProxy.address);
     const AUCTION_PROXY_ADDRESS = auctionProxy.address;
-    const auction = await ethers.getContractAt('FantomAuction', auctionProxy.address);
+    const auction = await ethers.getContractAt('GTONShopAuction', auctionProxy.address);
     
     await auction.initialize(TREASURY_ADDRESS);
     console.log('Auction Proxy initialized');
@@ -99,7 +99,7 @@ async function main(network) {
     ////////
 
     ////////
-    const Factory = await ethers.getContractFactory('FantomNFTFactory');
+    const Factory = await ethers.getContractFactory('GTONShopNFTFactory');
     const factory = await Factory.deploy(
         AUCTION_PROXY_ADDRESS,
         MARKETPLACE_PROXY_ADDRESS,
@@ -109,10 +109,10 @@ async function main(network) {
         '50000000000000000000'
     );
     await factory.deployed();
-    console.log('FantomNFTFactory deployed to:', factory.address);
+    console.log('GTONShopNFTFactory deployed to:', factory.address);
 
     const PrivateFactory = await ethers.getContractFactory(
-        'FantomNFTFactoryPrivate'
+        'GTONShopNFTFactoryPrivate'
     );
     const privateFactory = await PrivateFactory.deploy(
         AUCTION_PROXY_ADDRESS,
@@ -123,11 +123,11 @@ async function main(network) {
         '50000000000000000000'
     );
     await privateFactory.deployed();
-    console.log('FantomNFTFactoryPrivate deployed to:', privateFactory.address);
+    console.log('GTONShopNFTFactoryPrivate deployed to:', privateFactory.address);
     ////////    
 
     ////////
-    const NFTTradable = await ethers.getContractFactory('FantomNFTTradable');
+    const NFTTradable = await ethers.getContractFactory('GTONShopNFTTradable');
     const nft = await NFTTradable.deploy(
         'Artion',
         'ART',
@@ -138,10 +138,10 @@ async function main(network) {
         TREASURY_ADDRESS
     );
     await nft.deployed();
-    console.log('FantomNFTTradable deployed to:', nft.address);
+    console.log('GTONShopNFTTradable deployed to:', nft.address);
 
     const NFTTradablePrivate = await ethers.getContractFactory(
-        'FantomNFTTradablePrivate'
+        'GTONShopNFTTradablePrivate'
     );
     const nftPrivate = await NFTTradablePrivate.deploy(
         'IArtion',
@@ -153,45 +153,45 @@ async function main(network) {
         TREASURY_ADDRESS
     );
     await nftPrivate.deployed();
-    console.log('FantomNFTTradablePrivate deployed to:', nftPrivate.address);
+    console.log('GTONShopNFTTradablePrivate deployed to:', nftPrivate.address);
     ////////
 
     ////////
-    const TokenRegistry = await ethers.getContractFactory('FantomTokenRegistry');
+    const TokenRegistry = await ethers.getContractFactory('GTONShopTokenRegistry');
     const tokenRegistry = await TokenRegistry.deploy();
 
     await tokenRegistry.deployed();
 
-    console.log('FantomTokenRegistry deployed to', tokenRegistry.address);
+    console.log('GTONShopTokenRegistry deployed to', tokenRegistry.address);
     ////////
 
     ////////
-    const AddressRegistry = await ethers.getContractFactory('FantomAddressRegistry');
+    const AddressRegistry = await ethers.getContractFactory('GTONShopAddressRegistry');
     const addressRegistry = await AddressRegistry.deploy();
 
     await addressRegistry.deployed();
 
-    console.log('FantomAddressRegistry deployed to', addressRegistry.address);
-    const FANTOM_ADDRESS_REGISTRY = addressRegistry.address;
+    console.log('GTONShopAddressRegistry deployed to', addressRegistry.address);
+    const GTON_SHOP_ADDRESS_REGISTRY = addressRegistry.address;
     ////////
 
     ////////
-    const PriceFeed = await ethers.getContractFactory('FantomPriceFeed');
-    const WRAPPED_FTM = network.name === 'mainnet' ? WRAPPED_FTM_MAINNET : WRAPPED_FTM_TESTNET;
+    const PriceFeed = await ethers.getContractFactory('GTONShopPriceFeed');
+    const WRAPPED_FTM = network.name === 'mainnet' ? WRAPPED_GCD_MAINNET : WRAPPED_GCD_TESTNET;
     const priceFeed = await PriceFeed.deploy(
-      FANTOM_ADDRESS_REGISTRY,
+      GTON_SHOP_ADDRESS_REGISTRY,
       WRAPPED_FTM
     );
   
     await priceFeed.deployed();
   
-    console.log('FantomPriceFeed deployed to', priceFeed.address);
+    console.log('GTONShopPriceFeed deployed to', priceFeed.address);
     ////////
 
     ////////
-    const ArtTradable = await ethers.getContractFactory('FantomArtTradable');
+    const ArtTradable = await ethers.getContractFactory('GTONShopArtTradable');
     const artTradable = await ArtTradable.deploy(
-        'FantomArt',
+        'GTONShopArt',
         'FART',
         '20000000000000000000',
         TREASURY_ADDRESS,
@@ -199,13 +199,13 @@ async function main(network) {
         BUNDLE_MARKETPLACE_PROXY_ADDRESS
     );
     await artTradable.deployed();
-    console.log('FantomArtTradable deployed to:', artTradable.address);
+    console.log('GTONShopArtTradable deployed to:', artTradable.address);
 
     const ArtTradablePrivate = await ethers.getContractFactory(
-        'FantomArtTradablePrivate'
+        'GTONShopArtTradablePrivate'
     );
     const artTradablePrivate = await ArtTradablePrivate.deploy(
-        'FantomArt',
+        'GTONShopArt',
         'FART',
         '20000000000000000000',
         TREASURY_ADDRESS,
@@ -213,11 +213,11 @@ async function main(network) {
         BUNDLE_MARKETPLACE_PROXY_ADDRESS
     );
     await artTradablePrivate.deployed();
-    console.log('FantomArtTradablePrivate deployed to:', artTradablePrivate.address);
+    console.log('GTONShopArtTradablePrivate deployed to:', artTradablePrivate.address);
     ////////
 
     ////////
-    const ArtFactory = await ethers.getContractFactory('FantomArtFactory');
+    const ArtFactory = await ethers.getContractFactory('GTONShopArtFactory');
     const artFactory = await ArtFactory.deploy(
         MARKETPLACE_PROXY_ADDRESS,
         BUNDLE_MARKETPLACE_PROXY_ADDRESS,
@@ -226,10 +226,10 @@ async function main(network) {
         '10000000000000000000'
      );
     await artFactory.deployed();
-    console.log('FantomArtFactory deployed to:', artFactory.address);
+    console.log('GTONShopArtFactory deployed to:', artFactory.address);
 
     const ArtFactoryPrivate = await ethers.getContractFactory(
-        'FantomArtFactoryPrivate'
+        'GTONShopArtFactoryPrivate'
     );
     const artFactoryPrivate = await ArtFactoryPrivate.deploy(
         MARKETPLACE_PROXY_ADDRESS,
@@ -239,13 +239,13 @@ async function main(network) {
         '10000000000000000000'
     );
     await artFactoryPrivate.deployed();
-    console.log('FantomArtFactoryPrivate deployed to:', artFactoryPrivate.address);
+    console.log('GTONShopArtFactoryPrivate deployed to:', artFactoryPrivate.address);
     ////////
     
-    await marketplace.updateAddressRegistry(FANTOM_ADDRESS_REGISTRY);   
-    await bundleMarketplace.updateAddressRegistry(FANTOM_ADDRESS_REGISTRY);
+    await marketplace.updateAddressRegistry(GTON_SHOP_ADDRESS_REGISTRY);   
+    await bundleMarketplace.updateAddressRegistry(GTON_SHOP_ADDRESS_REGISTRY);
     
-    await auction.updateAddressRegistry(FANTOM_ADDRESS_REGISTRY);
+    await auction.updateAddressRegistry(GTON_SHOP_ADDRESS_REGISTRY);
     
     await addressRegistry.updateArtion(artion.address);
     await addressRegistry.updateAuction(auction.address);

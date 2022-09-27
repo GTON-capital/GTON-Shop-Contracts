@@ -12,7 +12,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-interface IFantomAddressRegistry {
+interface IGTONShopAddressRegistry {
     function artion() external view returns (address);
 
     function bundleMarketplace() external view returns (address);
@@ -32,7 +32,7 @@ interface IFantomAddressRegistry {
     function priceFeed() external view returns (address);
 }
 
-interface IFantomAuction {
+interface IGTONShopAuction {
     function auctions(address, uint256)
         external
         view
@@ -46,7 +46,7 @@ interface IFantomAuction {
         );
 }
 
-interface IFantomBundleMarketplace {
+interface IGTONShopBundleMarketplace {
     function validateItemSold(
         address,
         uint256,
@@ -54,21 +54,21 @@ interface IFantomBundleMarketplace {
     ) external;
 }
 
-interface IFantomNFTFactory {
+interface IGTONShopNFTFactory {
     function exists(address) external view returns (bool);
 }
 
-interface IFantomTokenRegistry {
+interface IGTONShopTokenRegistry {
     function enabled(address) external view returns (bool);
 }
 
-interface IFantomPriceFeed {
+interface IGTONShopPriceFeed {
     function wFTM() external view returns (address);
 
     function getPrice(address) external view returns (int256, uint8);
 }
 
-contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract GTONShopMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using SafeMath for uint256;
     using AddressUpgradeable for address payable;
     using SafeERC20 for IERC20;
@@ -171,7 +171,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     mapping(address => CollectionRoyalty) public collectionRoyalties;
 
     /// @notice Address registry
-    IFantomAddressRegistry public addressRegistry;
+    IGTONShopAddressRegistry public addressRegistry;
 
     modifier onlyMarketplace() {
         require(
@@ -437,7 +437,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 bytes("")
             );
         }
-        IFantomBundleMarketplace(addressRegistry.bundleMarketplace())
+        IGTONShopBundleMarketplace(addressRegistry.bundleMarketplace())
             .validateItemSold(_nftAddress, _tokenId, listedItem.quantity);
 
         emit ItemSold(
@@ -474,7 +474,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             "invalid nft address"
         );
 
-        IFantomAuction auction = IFantomAuction(addressRegistry.auction());
+        IGTONShopAuction auction = IGTONShopAuction(addressRegistry.auction());
 
         (, , , uint256 startTime, , bool resulted) = auction.auctions(
             _nftAddress,
@@ -577,7 +577,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 bytes("")
             );
         }
-        IFantomBundleMarketplace(addressRegistry.bundleMarketplace())
+        IGTONShopBundleMarketplace(addressRegistry.bundleMarketplace())
             .validateItemSold(_nftAddress, _tokenId, offer.quantity);
 
         emit ItemSold(
@@ -607,7 +607,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         uint16 _royalty
     ) external {
         require(_royalty <= 10000, "invalid royalty");
-        require(_isFantomNFT(_nftAddress), "invalid nft address");
+        require(_isGTONShopNFT(_nftAddress), "invalid nft address");
 
         _validOwner(_nftAddress, _tokenId, _msgSender(), 1);
 
@@ -634,7 +634,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             _royalty == 0 || _feeRecipient != address(0),
             "invalid fee recipient address"
         );
-        require(!_isFantomNFT(_nftAddress), "invalid nft address");
+        require(!_isGTONShopNFT(_nftAddress), "invalid nft address");
 
         if (collectionRoyalties[_nftAddress].creator == address(0)) {
             collectionRoyalties[_nftAddress] = CollectionRoyalty(
@@ -653,17 +653,17 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
     }
 
-    function _isFantomNFT(address _nftAddress) internal view returns (bool) {
+    function _isGTONShopNFT(address _nftAddress) internal view returns (bool) {
         return
             addressRegistry.artion() == _nftAddress ||
-            IFantomNFTFactory(addressRegistry.factory()).exists(_nftAddress) ||
-            IFantomNFTFactory(addressRegistry.privateFactory()).exists(
+            IGTONShopNFTFactory(addressRegistry.factory()).exists(_nftAddress) ||
+            IGTONShopNFTFactory(addressRegistry.privateFactory()).exists(
                 _nftAddress
             ) ||
-            IFantomNFTFactory(addressRegistry.artFactory()).exists(
+            IGTONShopNFTFactory(addressRegistry.artFactory()).exists(
                 _nftAddress
             ) ||
-            IFantomNFTFactory(addressRegistry.privateArtFactory()).exists(
+            IGTONShopNFTFactory(addressRegistry.privateArtFactory()).exists(
                 _nftAddress
             );
     }
@@ -675,7 +675,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     function getPrice(address _payToken) public view returns (int256) {
         int256 unitPrice;
         uint8 decimals;
-        IFantomPriceFeed priceFeed = IFantomPriceFeed(
+        IGTONShopPriceFeed priceFeed = IGTONShopPriceFeed(
             addressRegistry.priceFeed()
         );
 
@@ -717,11 +717,11 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     /**
-     @notice Update FantomAddressRegistry contract
+     @notice Update GTONShopAddressRegistry contract
      @dev Only admin
      */
     function updateAddressRegistry(address _registry) external onlyOwner {
-        addressRegistry = IFantomAddressRegistry(_registry);
+        addressRegistry = IGTONShopAddressRegistry(_registry);
     }
 
     /**
@@ -754,7 +754,7 @@ contract FantomMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         require(
             _payToken == address(0) ||
                 (addressRegistry.tokenRegistry() != address(0) &&
-                    IFantomTokenRegistry(addressRegistry.tokenRegistry())
+                    IGTONShopTokenRegistry(addressRegistry.tokenRegistry())
                         .enabled(_payToken)),
             "invalid pay token"
         );

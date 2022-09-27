@@ -1,19 +1,19 @@
 const {
-  FANTOM_ADDRESS_REGISTRY,
-  WRAPPED_FTM_MAINNET,
-  WRAPPED_FTM_TESTNET
+  GTON_SHOP_ADDRESS_REGISTRY,
+  WRAPPED_GCD_MAINNET,
+  WRAPPED_GCD_TESTNET
 } = require('./constants');
 
 async function main() {
-  const Contract = await ethers.getContractFactory('FantomPriceFeed');
+  const Contract = await ethers.getContractFactory('GTONShopPriceFeed');
   const contract = await Contract.deploy(
-    FANTOM_ADDRESS_REGISTRY,
-    WRAPPED_FTM_MAINNET
+    GTON_SHOP_ADDRESS_REGISTRY,
+    WRAPPED_GCD_MAINNET
   );
 
   await contract.deployed();
 
-  console.log('FantomPriceFeed deployed to', contract.address);
+  console.log('GTONShopPriceFeed deployed to', contract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

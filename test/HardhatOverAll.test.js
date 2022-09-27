@@ -11,15 +11,15 @@ const {
   
 const {expect} = require('chai');
 
-const FantomAddressRegistry = artifacts.require('FantomAddressRegistry');
+const GTONShopAddressRegistry = artifacts.require('GTONShopAddressRegistry');
 const Artion = artifacts.require('Artion');
-const FantomAuction = artifacts.require('MockFantomAuction');
-const FantomMarketplace = artifacts.require('FantomMarketplace');
-const FantomBundleMarketplace = artifacts.require('FantomBundleMarketplace');
-const FantomNFTFactory = artifacts.require('FantomNFTFactory');
-const FantomArtFactory = artifacts.require('FantomArtFactory');
-const FantomTokenRegistry = artifacts.require('FantomTokenRegistry');
-const FantomPriceFeed = artifacts.require('FantomPriceFeed');
+const GTONShopAuction = artifacts.require('MockGTONShopAuction');
+const GTONShopMarketplace = artifacts.require('GTONShopMarketplace');
+const GTONShopBundleMarketplace = artifacts.require('GTONShopBundleMarketplace');
+const GTONShopNFTFactory = artifacts.require('GTONShopNFTFactory');
+const GTONShopArtFactory = artifacts.require('GTONShopArtFactory');
+const GTONShopTokenRegistry = artifacts.require('GTONShopTokenRegistry');
+const GTONShopPriceFeed = artifacts.require('GTONShopPriceFeed');
 const MockERC20 = artifacts.require('MockERC20');
 
 
@@ -40,41 +40,41 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
     beforeEach(async function () {
         
-        this.fantomAddressRegistry = await FantomAddressRegistry.new();
+        this.gtonShopAddressRegistry = await GTONShopAddressRegistry.new();
         this.artion = await Artion.new(platformFeeRecipient, platformFee);
 
-        this.fantomAuction = await FantomAuction.new();
-        await this.fantomAuction.initialize(platformFeeRecipient);
-        await this.fantomAuction.updateAddressRegistry(this.fantomAddressRegistry.address);
+        this.gtonShopAuction = await GTONShopAuction.new();
+        await this.gtonShopAuction.initialize(platformFeeRecipient);
+        await this.gtonShopAuction.updateAddressRegistry(this.gtonShopAddressRegistry.address);
 
-        this.fantomMarketplace = await FantomMarketplace.new();
-        await this.fantomMarketplace.initialize(platformFeeRecipient, marketPlatformFee);
+        this.gtonShopMarketplace = await GTONShopMarketplace.new();
+        await this.gtonShopMarketplace.initialize(platformFeeRecipient, marketPlatformFee);
 
-        await this.fantomMarketplace.updateAddressRegistry(this.fantomAddressRegistry.address);
+        await this.gtonShopMarketplace.updateAddressRegistry(this.gtonShopAddressRegistry.address);
 
-        this.fantomBundleMarketplace = await FantomBundleMarketplace.new();
-        await this.fantomBundleMarketplace.initialize(platformFeeRecipient, marketPlatformFee);
-        await this.fantomBundleMarketplace.updateAddressRegistry(this.fantomAddressRegistry.address);
+        this.gtonShopBundleMarketplace = await GTONShopBundleMarketplace.new();
+        await this.gtonShopBundleMarketplace.initialize(platformFeeRecipient, marketPlatformFee);
+        await this.gtonShopBundleMarketplace.updateAddressRegistry(this.gtonShopAddressRegistry.address);
 
-        this.fantomNFTFactory = await FantomNFTFactory.new(this.fantomAuction.address, this.fantomMarketplace.address, this.fantomBundleMarketplace.address, mintFee, platformFeeRecipient, platformFee);
-        this.fantomTokenRegistry = await FantomTokenRegistry.new();
+        this.gtonShopNFTFactory = await GTONShopNFTFactory.new(this.gtonShopAuction.address, this.gtonShopMarketplace.address, this.gtonShopBundleMarketplace.address, mintFee, platformFeeRecipient, platformFee);
+        this.gtonShopTokenRegistry = await GTONShopTokenRegistry.new();
 
         this.mockERC20 = await MockERC20.new("wFTM", "wFTM", ether('1000000'));
 
-        this.fantomTokenRegistry.add(this.mockERC20.address);
+        this.gtonShopTokenRegistry.add(this.mockERC20.address);
 
-        this.fantomPriceFeed = await FantomPriceFeed.new(this.fantomAddressRegistry.address, this.mockERC20.address);
+        this.gtonShopPriceFeed = await GTONShopPriceFeed.new(this.gtonShopAddressRegistry.address, this.mockERC20.address);
 
-        this.fantomArtFactory = await FantomArtFactory.new(this.fantomMarketplace.address, this.fantomBundleMarketplace.address, mintFee, platformFeeRecipient, platformFee);
+        this.gtonShopArtFactory = await GTONShopArtFactory.new(this.gtonShopMarketplace.address, this.gtonShopBundleMarketplace.address, mintFee, platformFeeRecipient, platformFee);
 
-        await this.fantomAddressRegistry.updateArtion(this.artion.address);
-        await this.fantomAddressRegistry.updateAuction(this.fantomAuction.address);
-        await this.fantomAddressRegistry.updateMarketplace(this.fantomMarketplace.address);
-        await this.fantomAddressRegistry.updateBundleMarketplace(this.fantomBundleMarketplace.address);
-        await this.fantomAddressRegistry.updateNFTFactory(this.fantomNFTFactory.address);
-        await this.fantomAddressRegistry.updateTokenRegistry(this.fantomTokenRegistry.address);
-        await this.fantomAddressRegistry.updatePriceFeed(this.fantomPriceFeed.address);
-        await this.fantomAddressRegistry.updateArtFactory(this.fantomArtFactory.address);
+        await this.gtonShopAddressRegistry.updateArtion(this.artion.address);
+        await this.gtonShopAddressRegistry.updateAuction(this.gtonShopAuction.address);
+        await this.gtonShopAddressRegistry.updateMarketplace(this.gtonShopMarketplace.address);
+        await this.gtonShopAddressRegistry.updateBundleMarketplace(this.gtonShopBundleMarketplace.address);
+        await this.gtonShopAddressRegistry.updateNFTFactory(this.gtonShopNFTFactory.address);
+        await this.gtonShopAddressRegistry.updateTokenRegistry(this.gtonShopTokenRegistry.address);
+        await this.gtonShopAddressRegistry.updatePriceFeed(this.gtonShopPriceFeed.address);
+        await this.gtonShopAddressRegistry.updateArtFactory(this.gtonShopArtFactory.address);
     });
 
     describe('Minting and auctioning NFT', function() {
@@ -140,12 +140,12 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             console.log(`
             The artist approves the nft to the market`);
-            await this.artion.setApprovalForAll(this.fantomMarketplace.address, true, {from: artist});
+            await this.artion.setApprovalForAll(this.gtonShopMarketplace.address, true, {from: artist});
 
             console.log(`
             The artist lists the nft in the market with price 20 wFTM and 
             starting time 2021-09-22 10:00:00 GMT`);
-            await this.fantomMarketplace.listItem(
+            await this.gtonShopMarketplace.listItem(
                     this.artion.address,
                     new BN('1'),
                     new BN('1'),
@@ -155,7 +155,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
                     { from : artist }
                     );
 
-            let listing = await this.fantomMarketplace.listings(this.artion.address, new BN('1'), artist);
+            let listing = await this.gtonShopMarketplace.listings(this.artion.address, new BN('1'), artist);
             console.log(`
             *The nft should be on the marketplace listing`);
             expect(listing.quantity.toString()).to.be.equal('1');
@@ -168,12 +168,12 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             await this.mockERC20.mint(buyer, ether('50'));
 
             console.log(`
-            Buyer approves FantomMarketplace to transfer up to 50 wFTM`);
-            await this.mockERC20.approve(this.fantomMarketplace.address, ether('50'), {from: buyer});
+            Buyer approves GTONShopMarketplace to transfer up to 50 wFTM`);
+            await this.mockERC20.approve(this.gtonShopMarketplace.address, ether('50'), {from: buyer});
             
             console.log(`
             Buyer buys the nft for 20 wFTMs`);
-            result = await this.fantomMarketplace.buyItem(
+            result = await this.gtonShopMarketplace.buyItem(
                 this.artion.address, 
                 new BN('1'), 
                 this.mockERC20.address, 
@@ -217,7 +217,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             *The wFTM balance of the artist should be 19 wFTMs`);
             expect(weiToEther(balance)*1).to.be.equal(19);
 
-            listing = await this.fantomMarketplace.listings(this.artion.address, new BN('1'), artist);
+            listing = await this.gtonShopMarketplace.listings(this.artion.address, new BN('1'), artist);
             console.log(`
             *The nft now should be removed from the listing`);            
             expect(listing.quantity.toString()).to.be.equal('0');
@@ -289,15 +289,15 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             console.log(`
             The artist approves the nft to the market`);
-            await this.artion.setApprovalForAll(this.fantomAuction.address, true, {from: artist});
+            await this.artion.setApprovalForAll(this.gtonShopAuction.address, true, {from: artist});
 
             console.log(`
             Let's mock that the current time: 2021-09-25 09:00:00`);
-            await this.fantomAuction.setTime(new BN('1632560400'));
+            await this.gtonShopAuction.setTime(new BN('1632560400'));
 
             console.log(`
             The artist auctions his nfts with reserve price of 20 wFTMs`);
-            result =  await this.fantomAuction.createAuction(
+            result =  await this.gtonShopAuction.createAuction(
                 this.artion.address,
                 new BN('1'),
                 this.mockERC20.address,
@@ -324,32 +324,32 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             await this.mockERC20.mint(bidder1, ether('50'));
 
             console.log(`
-            Bidder1 approves FantomAuction to transfer up to 50 wFTM`);
-            await this.mockERC20.approve(this.fantomAuction.address, ether('50'), {from: bidder1});
+            Bidder1 approves GTONShopAuction to transfer up to 50 wFTM`);
+            await this.mockERC20.approve(this.gtonShopAuction.address, ether('50'), {from: bidder1});
 
             console.log(`
             Mint 50 wFTMs to bidder2 so he can bid the auctioned nft`);
             await this.mockERC20.mint(bidder2, ether('50'));
 
             console.log(`
-            Bidder2 approves FantomAuction to transfer up to 50 wFTM`);
-            await this.mockERC20.approve(this.fantomAuction.address, ether('50'), {from: bidder2});
+            Bidder2 approves GTONShopAuction to transfer up to 50 wFTM`);
+            await this.mockERC20.approve(this.gtonShopAuction.address, ether('50'), {from: bidder2});
 
             console.log(`
             Mint 50 wFTMs to bidder3 so he can bid the auctioned nft`);
             await this.mockERC20.mint(bidder3, ether('50'));
 
             console.log(`
-            Bidder3 approves FantomAuction to transfer up to 50 wFTM`);
-            await this.mockERC20.approve(this.fantomAuction.address, ether('50'), {from: bidder3});
+            Bidder3 approves GTONShopAuction to transfer up to 50 wFTM`);
+            await this.mockERC20.approve(this.gtonShopAuction.address, ether('50'), {from: bidder3});
 
             console.log(`
             Let's mock that the current time: 2021-09-25 10:30:00`);
-            await this.fantomAuction.setTime(new BN('1632565800'));
+            await this.gtonShopAuction.setTime(new BN('1632565800'));
 
             console.log(`
             Bidder1 place a bid of 20 wFTMs`);
-            await this.fantomAuction.placeBid(this.artion.address, new BN('1'), ether('20'), { from: bidder1 });
+            await this.gtonShopAuction.placeBid(this.artion.address, new BN('1'), ether('20'), { from: bidder1 });
 
             balance = await this.mockERC20.balanceOf(bidder1);
             console.log(`
@@ -358,7 +358,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             console.log(`
             Bidder2 place a bid of 25 wFTMs`);
-            await this.fantomAuction.placeBid(this.artion.address, new BN('1'), ether('25'), { from: bidder2 });
+            await this.gtonShopAuction.placeBid(this.artion.address, new BN('1'), ether('25'), { from: bidder2 });
 
             balance = await this.mockERC20.balanceOf(bidder1);
             console.log(`
@@ -372,7 +372,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             console.log(`
             Bidder3 place a bid of 30 wFTMs`);
-            await this.fantomAuction.placeBid(this.artion.address, new BN('1'), ether('30'), { from: bidder3 });
+            await this.gtonShopAuction.placeBid(this.artion.address, new BN('1'), ether('30'), { from: bidder3 });
 
             balance = await this.mockERC20.balanceOf(bidder2);
             console.log(`
@@ -386,11 +386,11 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             console.log(`
             Let's mock that the current time: 2021-09-30 11:00:00 so the auction has ended`);
-            await this.fantomAuction.setTime(new BN('1632999600'));
+            await this.gtonShopAuction.setTime(new BN('1632999600'));
 
             console.log(`
             The artist tries to make the auction complete`);
-            result = await this.fantomAuction.resultAuction(this.artion.address, new BN('1'), {from : artist});
+            result = await this.gtonShopAuction.resultAuction(this.artion.address, new BN('1'), {from : artist});
 
             console.log(`
             *As the platformFee is 2.5%, the platform fee recipient should get 2.5% of (30 - 20) which is 0.25 wFTM.`);
@@ -506,12 +506,12 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             console.log(`
             The artist approves the nft to the market`);
-            await this.artion.setApprovalForAll(this.fantomBundleMarketplace.address, true, {from: artist});
+            await this.artion.setApprovalForAll(this.gtonShopBundleMarketplace.address, true, {from: artist});
 
             console.log(`
             The artist lists the 2 nfts in the bundle market with price 20 wFTM and 
             starting time 2021-09-22 10:00:00 GMT`);
-            await this.fantomBundleMarketplace.listItem(
+            await this.gtonShopBundleMarketplace.listItem(
                     'mynfts',
                     [this.artion.address, this.artion.address],
                     [new BN('1'),new BN('2')],
@@ -522,7 +522,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
                     { from : artist }
                     );
 
-            let listing = await this.fantomBundleMarketplace.getListing(artist, 'mynfts');
+            let listing = await this.gtonShopBundleMarketplace.getListing(artist, 'mynfts');
             //console.log(listing);
             console.log(`
             *The nfts should be on the bundle marketplace listing`);
@@ -542,12 +542,12 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             await this.mockERC20.mint(buyer, ether('50'));
 
             console.log(`
-            The buyer approves FantomBundleMarketplace to transfer up to 50 wFTM`);
-            await this.mockERC20.approve(this.fantomBundleMarketplace.address, ether('50'), {from: buyer});
+            The buyer approves GTONShopBundleMarketplace to transfer up to 50 wFTM`);
+            await this.mockERC20.approve(this.gtonShopBundleMarketplace.address, ether('50'), {from: buyer});
 
             console.log(`
             The buyer buys the nft for 20 wFTMs`);
-            result = await this.fantomBundleMarketplace.buyItem(
+            result = await this.gtonShopBundleMarketplace.buyItem(
                 'mynfts', 
                 this.mockERC20.address, 
                 { from: buyer});

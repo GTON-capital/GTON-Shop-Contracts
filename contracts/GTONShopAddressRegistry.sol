@@ -5,37 +5,37 @@ pragma solidity 0.6.12;
 import "@openzeppelin/contracts/introspection/IERC165.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract FantomAddressRegistry is Ownable {
+contract GTONShopAddressRegistry is Ownable {
     bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
 
     /// @notice Artion contract
     address public artion;
 
-    /// @notice FantomAuction contract
+    /// @notice GTONShopAuction contract
     address public auction;
 
-    /// @notice FantomMarketplace contract
+    /// @notice GTONShopMarketplace contract
     address public marketplace;
 
-    /// @notice FantomBundleMarketplace contract
+    /// @notice GTONShopBundleMarketplace contract
     address public bundleMarketplace;
 
-    /// @notice FantomNFTFactory contract
+    /// @notice GTONShopNFTFactory contract
     address public factory;
 
-    /// @notice FantomNFTFactoryPrivate contract
+    /// @notice GTONShopNFTFactoryPrivate contract
     address public privateFactory;
 
-    /// @notice FantomArtFactory contract
+    /// @notice GTONShopArtFactory contract
     address public artFactory;
 
-    /// @notice FantomArtFactoryPrivate contract
+    /// @notice GTONShopArtFactoryPrivate contract
     address public privateArtFactory;
 
-    /// @notice FantomTokenRegistry contract
+    /// @notice GTONShopTokenRegistry contract
     address public tokenRegistry;
 
-    /// @notice FantomPriceFeed contract
+    /// @notice GTONShopPriceFeed contract
     address public priceFeed;
 
     /**
@@ -51,7 +51,7 @@ contract FantomAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update FantomAuction contract
+     @notice Update GTONShopAuction contract
      @dev Only admin
      */
     function updateAuction(address _auction) external onlyOwner {
@@ -59,7 +59,7 @@ contract FantomAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update FantomMarketplace contract
+     @notice Update GTONShopMarketplace contract
      @dev Only admin
      */
     function updateMarketplace(address _marketplace) external onlyOwner {
@@ -67,7 +67,7 @@ contract FantomAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update FantomBundleMarketplace contract
+     @notice Update GTONShopBundleMarketplace contract
      @dev Only admin
      */
     function updateBundleMarketplace(address _bundleMarketplace)
@@ -78,7 +78,7 @@ contract FantomAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update FantomNFTFactory contract
+     @notice Update GTONShopNFTFactory contract
      @dev Only admin
      */
     function updateNFTFactory(address _factory) external onlyOwner {
@@ -86,7 +86,7 @@ contract FantomAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update FantomNFTFactoryPrivate contract
+     @notice Update GTONShopNFTFactoryPrivate contract
      @dev Only admin
      */
     function updateNFTFactoryPrivate(address _privateFactory)
@@ -97,7 +97,7 @@ contract FantomAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update FantomArtFactory contract
+     @notice Update GTONShopArtFactory contract
      @dev Only admin
      */
     function updateArtFactory(address _artFactory) external onlyOwner {
@@ -105,7 +105,7 @@ contract FantomAddressRegistry is Ownable {
     }
 
     /**
-     @notice Update FantomArtFactoryPrivate contract
+     @notice Update GTONShopArtFactoryPrivate contract
      @dev Only admin
      */
     function updateArtFactoryPrivate(address _privateArtFactory)

@@ -8,11 +8,11 @@ async function main() {
 
   console.log('ProxyAdmin deployed to:', proxyAdmin.address);
 
-  const Marketplace = await ethers.getContractFactory('FantomMarketplace');
+  const Marketplace = await ethers.getContractFactory('GTONShopMarketplace');
   const marketplaceImpl = await Marketplace.deploy();
   await marketplaceImpl.deployed();
 
-  console.log('FantomMarketplace deployed to:', marketplaceImpl.address);
+  console.log('GTONShopMarketplace deployed to:', marketplaceImpl.address);
 
   const AdminUpgradeabilityProxyFactory = await ethers.getContractFactory(
     'AdminUpgradeabilityProxy'
@@ -36,7 +36,7 @@ async function main() {
   console.log('Marketplace Proxy deployed at ', marketplaceProxy.address);
 
   const marketplace = await ethers.getContractAt(
-    'FantomMarketplace',
+    'GTONShopMarketplace',
     marketplaceProxy.address
   );
   await marketplace.initialize(TREASURY_ADDRESS, PLATFORM_FEE);

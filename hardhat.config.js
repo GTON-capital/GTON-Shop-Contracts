@@ -27,13 +27,13 @@ module.exports = {
   },
   networks: {
     mainnet: {
-      url: `https://rpcapi.fantom.network`,
-      chainId: 250,
+      url: 'https://rpc.gton.network/',
+      chainId: 1000,
       accounts: [`0x${PRIVATE_KEY}`]
     },
     testnet: {
-      url: `https://rpcapi-tracing.testnet.fantom.network`,
-      chainId: 4002,
+      url: 'https://testnet.gton.network',
+      chainId: 50021,
       accounts: [`0x${PRIVATE_KEY}`]
     },
     ropsten: {

@@ -10,7 +10,7 @@ async function main() {
 
   await contract.deployed();
 
-  console.log('FantomArtion deployed at', contract.address);
+  console.log('GTONShopArtion deployed at', contract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
