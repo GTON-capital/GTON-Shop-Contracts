@@ -577,12 +577,12 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             expect(nftOwner).to.be.equal(buyer);
 
             console.log(`
-            *The artist's wGCD balance now should be 19 wTFM`);
+            *The artist's wGCD balance now should be 19 wGCD`);
             balance = await this.mockERC20.balanceOf(artist);
             expect(weiToEther(balance)*1).to.be.equal(19);
 
             console.log(`
-            *The platform fee recipient's wGCD balance now should be 1 wTFM`);
+            *The platform fee recipient's wGCD balance now should be 1 wGCD`);
             balance = await this.mockERC20.balanceOf(platformFeeRecipient);
             expect(weiToEther(balance)*1).to.be.equal(1);
 
