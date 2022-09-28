@@ -62,7 +62,7 @@ contract GTONShopNFT is ERC721("GTONShopNFT", "ART"), Ownable {
         _safeMint(_beneficiary, tokenId);
         _setTokenURI(tokenId, _tokenUri);
         
-        // Send FTM fee to fee recipient
+        // Send GCD fee to fee recipient
         feeReceipient.transfer(msg.value);
 
         // Associate garment designer

@@ -304,7 +304,7 @@ contract GTONShopAuction is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         );
         require(
             auction.payToken != address(0),
-            "ERC20 method used for FTM auction"
+            "ERC20 method used for GCD auction"
         );
 
         _placeBid(_nftAddress, _tokenId, _bidAmount);

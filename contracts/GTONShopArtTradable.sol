@@ -102,7 +102,7 @@ contract GTONShopArtTradable is
         _mint(_to, _id, _supply, bytes(""));
         tokenSupply[_id] = _supply;
 
-        // Send FTM fee to fee recipient
+        // Send GCD fee to fee recipient
         (bool success, ) = feeReceipient.call{value: msg.value}("");
         require(success, "Transfer failed");
     }

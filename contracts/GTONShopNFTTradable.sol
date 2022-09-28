@@ -87,7 +87,7 @@ contract GTONShopNFTTradable is ERC721, Ownable {
         _setTokenURI(newTokenId, _tokenUri);
         _incrementTokenId();
 
-        // Send FTM fee to fee recipient
+        // Send GCD fee to fee recipient
         (bool success,) = feeReceipient.call{value : msg.value}("");
         require(success, "Transfer failed");
 

@@ -177,10 +177,10 @@ async function main(network) {
 
     ////////
     const PriceFeed = await ethers.getContractFactory('GTONShopPriceFeed');
-    const WRAPPED_FTM = network.name === 'mainnet' ? WRAPPED_GCD_MAINNET : WRAPPED_GCD_TESTNET;
+    const WRAPPED_GCD = network.name === 'mainnet' ? WRAPPED_GCD_MAINNET : WRAPPED_GCD_TESTNET;
     const priceFeed = await PriceFeed.deploy(
       GTON_SHOP_ADDRESS_REGISTRY,
-      WRAPPED_FTM
+      WRAPPED_GCD
     );
   
     await priceFeed.deployed();
@@ -256,7 +256,7 @@ async function main(network) {
     await addressRegistry.updatePriceFeed(priceFeed.address);
     await addressRegistry.updateArtFactory(artFactory.address);   
 
-    await tokenRegistry.add(WRAPPED_FTM);
+    await tokenRegistry.add(WRAPPED_GCD);
 
   }
   

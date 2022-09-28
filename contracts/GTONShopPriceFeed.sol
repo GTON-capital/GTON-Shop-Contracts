@@ -25,12 +25,12 @@ contract GTONShopPriceFeed is Ownable {
     /// @notice gtonShop address registry contract
     address public addressRegistry;
 
-    /// @notice wrapped FTM contract
-    address public wFTM;
+    /// @notice wrapped GCD contract
+    address public wGCD;
 
-    constructor(address _addressRegistry, address _wFTM) public {
+    constructor(address _addressRegistry, address _wGCD) public {
         addressRegistry = _addressRegistry;
-        wFTM = _wFTM;
+        wGCD = _wGCD;
     }
 
     /**

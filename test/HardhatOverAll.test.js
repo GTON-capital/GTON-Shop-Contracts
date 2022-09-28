@@ -59,7 +59,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
         this.gtonShopNFTFactory = await GTONShopNFTFactory.new(this.gtonShopAuction.address, this.gtonShopMarketplace.address, this.gtonShopBundleMarketplace.address, mintFee, platformFeeRecipient, platformFee);
         this.gtonShopTokenRegistry = await GTONShopTokenRegistry.new();
 
-        this.mockERC20 = await MockERC20.new("wFTM", "wFTM", ether('1000000'));
+        this.mockERC20 = await MockERC20.new("wGCD", "wGCD", ether('1000000'));
 
         this.gtonShopTokenRegistry.add(this.mockERC20.address);
 
@@ -84,7 +84,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             console.log(`
             Scenario 1:
             An artist mints an NFT for him/herself
-            He/She then put it on the marketplace with price of 20 wFTMs
+            He/She then put it on the marketplace with price of 20 wGCDs
             A buyer then buys that NFT
             `);
 
@@ -94,11 +94,11 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             let balance1 = await web3.eth.getBalance(artist);
             console.log(`
-            FTM balance of artist before minting: ${weiToEther(balance1)}`);
+            GCD balance of artist before minting: ${weiToEther(balance1)}`);
 
             let balance2 = await web3.eth.getBalance(platformFeeRecipient);
             console.log(`
-            FTM balance of the fee recipient before minting: ${weiToEther(balance2)}`);
+            GCD balance of the fee recipient before minting: ${weiToEther(balance2)}`);
 
             console.log(`
             Now minting...`);
@@ -108,21 +108,21 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             let balance3 = await web3.eth.getBalance(artist);
             console.log(`
-            FTM balance of artist after minting: ${weiToEther(balance3)}`);
+            GCD balance of artist after minting: ${weiToEther(balance3)}`);
 
             let balance4 = await web3.eth.getBalance(platformFeeRecipient);
             console.log(`
-            FTM balance of recipient after minting: ${weiToEther(balance4)}`);
+            GCD balance of recipient after minting: ${weiToEther(balance4)}`);
 
             console.log(`
-            *The difference of the artist's FTM balance should be more than ${PLATFORM_FEE} FTM as 
-            the platform fee is ${PLATFORM_FEE} FTM and minting costs some gases
-            but should be less than ${PLATFORM_FEE + 1} FTM as the gas fees shouldn't be more than 1 FTM`);
+            *The difference of the artist's GCD balance should be more than ${PLATFORM_FEE} GCD as 
+            the platform fee is ${PLATFORM_FEE} GCD and minting costs some gases
+            but should be less than ${PLATFORM_FEE + 1} GCD as the gas fees shouldn't be more than 1 GCD`);
             expect(weiToEther(balance1)*1 - weiToEther(balance3)*1).to.be.greaterThan(PLATFORM_FEE*1);
             expect(weiToEther(balance1)*1 - weiToEther(balance3)*1).to.be.lessThan(PLATFORM_FEE*1 + 1);
 
             console.log(`
-            *The difference of the recipients's FTM balance should be ${PLATFORM_FEE} FTM as the platform fee is ${PLATFORM_FEE} FTM `);
+            *The difference of the recipients's GCD balance should be ${PLATFORM_FEE} GCD as the platform fee is ${PLATFORM_FEE} GCD `);
             expect(weiToEther(balance4)*1 - weiToEther(balance2)*1).to.be.equal(PLATFORM_FEE*1);
 
             console.log(`
@@ -143,7 +143,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             await this.gtonShopNFT.setApprovalForAll(this.gtonShopMarketplace.address, true, {from: artist});
 
             console.log(`
-            The artist lists the nft in the market with price 20 wFTM and 
+            The artist lists the nft in the market with price 20 wGCD and 
             starting time 2021-09-22 10:00:00 GMT`);
             await this.gtonShopMarketplace.listItem(
                     this.gtonShopNFT.address,
@@ -164,15 +164,15 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             expect(listing.startingTime.toString()).to.be.equal('1632304800');
 
             console.log(`
-            Mint 50 wFTMs to buyer so he can buy the nft`);
+            Mint 50 wGCDs to buyer so he can buy the nft`);
             await this.mockERC20.mint(buyer, ether('50'));
 
             console.log(`
-            Buyer approves GTONShopMarketplace to transfer up to 50 wFTM`);
+            Buyer approves GTONShopMarketplace to transfer up to 50 wGCD`);
             await this.mockERC20.approve(this.gtonShopMarketplace.address, ether('50'), {from: buyer});
             
             console.log(`
-            Buyer buys the nft for 20 wFTMs`);
+            Buyer buys the nft for 20 wGCDs`);
             result = await this.gtonShopMarketplace.buyItem(
                 this.gtonShopNFT.address, 
                 new BN('1'), 
@@ -204,7 +204,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             balance = await this.mockERC20.balanceOf(buyer);
             console.log(`
-            *The wFTM balance of buyer now should be 30 wFTMs`);
+            *The wGCD balance of buyer now should be 30 wGCDs`);
             expect(weiToEther(balance)*1).to.be.equal(30);
 
             let nftOwner = await this.gtonShopNFT.ownerOf(new BN('1'));
@@ -214,7 +214,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             
             balance = await this.mockERC20.balanceOf(artist);
             console.log(`
-            *The wFTM balance of the artist should be 19 wFTMs`);
+            *The wGCD balance of the artist should be 19 wGCDs`);
             expect(weiToEther(balance)*1).to.be.equal(19);
 
             listing = await this.gtonShopMarketplace.listings(this.gtonShopNFT.address, new BN('1'), artist);
@@ -234,8 +234,8 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             console.log(`
             Scenario 2:
             An artist mints an NFT from him/herself
-            He/She then put it on an auction with reserve price of 20 wFTMs
-            Bidder1, bidder2, bidder3 then bid the auction with 20 wFTMs, 25 wFTMs, and 30 wFTMs respectively`);
+            He/She then put it on an auction with reserve price of 20 wGCDs
+            Bidder1, bidder2, bidder3 then bid the auction with 20 wGCDs, 25 wGCDs, and 30 wGCDs respectively`);
 
             let balance = await this.gtonShopNFT.platformFee();
             console.log(`
@@ -243,11 +243,11 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             let balance1 = await web3.eth.getBalance(artist);
             console.log(`
-            FTM balance of artist before minting: ${weiToEther(balance1)}`);
+            GCD balance of artist before minting: ${weiToEther(balance1)}`);
 
             let balance2 = await web3.eth.getBalance(platformFeeRecipient);
             console.log(`
-            FTM balance of the fee recipient before minting: ${weiToEther(balance2)}`);
+            GCD balance of the fee recipient before minting: ${weiToEther(balance2)}`);
 
             console.log(`
             Now minting...`);
@@ -257,21 +257,21 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             let balance3 = await web3.eth.getBalance(artist);
             console.log(`
-            FTM balance of artist after minting: ${weiToEther(balance3)}`);
+            GCD balance of artist after minting: ${weiToEther(balance3)}`);
 
             let balance4 = await web3.eth.getBalance(platformFeeRecipient);
             console.log(`
-            FTM balance of recipient after minting: ${weiToEther(balance4)}`);
+            GCD balance of recipient after minting: ${weiToEther(balance4)}`);
 
             console.log(`
-            *The difference of the artist's FTM balance should be more than ${PLATFORM_FEE} FTMs as 
-            the platform fee is ${PLATFORM_FEE} FTM and minting costs some gases
-            but should be less than ${PLATFORM_FEE + 1} FTM as the gas fees shouldn't be more than 1 FTM`);
+            *The difference of the artist's GCD balance should be more than ${PLATFORM_FEE} GCDs as 
+            the platform fee is ${PLATFORM_FEE} GCD and minting costs some gases
+            but should be less than ${PLATFORM_FEE + 1} GCD as the gas fees shouldn't be more than 1 GCD`);
             expect(weiToEther(balance1)*1 - weiToEther(balance3)*1).to.be.greaterThan(PLATFORM_FEE*1);
             expect(weiToEther(balance1)*1 - weiToEther(balance3)*1).to.be.lessThan(PLATFORM_FEE*1 + 1);
 
             console.log(`
-            *The difference of the recipients's FTM balance should be ${PLATFORM_FEE} FTMs as the platform fee is ${PLATFORM_FEE} FTMs `);
+            *The difference of the recipients's GCD balance should be ${PLATFORM_FEE} GCDs as the platform fee is ${PLATFORM_FEE} GCDs `);
             expect(weiToEther(balance4)*1 - weiToEther(balance2)*1).to.be.equal(PLATFORM_FEE*1);
 
             console.log(`
@@ -296,7 +296,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             await this.gtonShopAuction.setTime(new BN('1632560400'));
 
             console.log(`
-            The artist auctions his nfts with reserve price of 20 wFTMs`);
+            The artist auctions his nfts with reserve price of 20 wGCDs`);
             result =  await this.gtonShopAuction.createAuction(
                 this.gtonShopNFT.address,
                 new BN('1'),
@@ -320,27 +320,27 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             });
 
             console.log(`
-            Mint 50 wFTMs to bidder1 so he can bid the auctioned nft`);
+            Mint 50 wGCDs to bidder1 so he can bid the auctioned nft`);
             await this.mockERC20.mint(bidder1, ether('50'));
 
             console.log(`
-            Bidder1 approves GTONShopAuction to transfer up to 50 wFTM`);
+            Bidder1 approves GTONShopAuction to transfer up to 50 wGCD`);
             await this.mockERC20.approve(this.gtonShopAuction.address, ether('50'), {from: bidder1});
 
             console.log(`
-            Mint 50 wFTMs to bidder2 so he can bid the auctioned nft`);
+            Mint 50 wGCDs to bidder2 so he can bid the auctioned nft`);
             await this.mockERC20.mint(bidder2, ether('50'));
 
             console.log(`
-            Bidder2 approves GTONShopAuction to transfer up to 50 wFTM`);
+            Bidder2 approves GTONShopAuction to transfer up to 50 wGCD`);
             await this.mockERC20.approve(this.gtonShopAuction.address, ether('50'), {from: bidder2});
 
             console.log(`
-            Mint 50 wFTMs to bidder3 so he can bid the auctioned nft`);
+            Mint 50 wGCDs to bidder3 so he can bid the auctioned nft`);
             await this.mockERC20.mint(bidder3, ether('50'));
 
             console.log(`
-            Bidder3 approves GTONShopAuction to transfer up to 50 wFTM`);
+            Bidder3 approves GTONShopAuction to transfer up to 50 wGCD`);
             await this.mockERC20.approve(this.gtonShopAuction.address, ether('50'), {from: bidder3});
 
             console.log(`
@@ -348,40 +348,40 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             await this.gtonShopAuction.setTime(new BN('1632565800'));
 
             console.log(`
-            Bidder1 place a bid of 20 wFTMs`);
+            Bidder1 place a bid of 20 wGCDs`);
             await this.gtonShopAuction.placeBid(this.gtonShopNFT.address, new BN('1'), ether('20'), { from: bidder1 });
 
             balance = await this.mockERC20.balanceOf(bidder1);
             console.log(`
-            *Bidder1's wFTM balance after bidding should be 30 wFTMs`);
+            *Bidder1's wGCD balance after bidding should be 30 wGCDs`);
             expect(weiToEther(balance)*1).to.be.equal(30);
 
             console.log(`
-            Bidder2 place a bid of 25 wFTMs`);
+            Bidder2 place a bid of 25 wGCDs`);
             await this.gtonShopAuction.placeBid(this.gtonShopNFT.address, new BN('1'), ether('25'), { from: bidder2 });
 
             balance = await this.mockERC20.balanceOf(bidder1);
             console.log(`
-            *Bidder1's wFTM balance after bidder2 outbid should be back to 50 wFTMs`);
+            *Bidder1's wGCD balance after bidder2 outbid should be back to 50 wGCDs`);
             expect(weiToEther(balance)*1).to.be.equal(50);
 
             balance = await this.mockERC20.balanceOf(bidder2);
             console.log(`
-            *Bidder2's wFTM balance after bidding should be 25`);
+            *Bidder2's wGCD balance after bidding should be 25`);
             expect(weiToEther(balance)*1).to.be.equal(25);            
 
             console.log(`
-            Bidder3 place a bid of 30 wFTMs`);
+            Bidder3 place a bid of 30 wGCDs`);
             await this.gtonShopAuction.placeBid(this.gtonShopNFT.address, new BN('1'), ether('30'), { from: bidder3 });
 
             balance = await this.mockERC20.balanceOf(bidder2);
             console.log(`
-            *Bidder2's wFTM balance after bidder3 outbid should be back to 50 wFTMs`);
+            *Bidder2's wGCD balance after bidder3 outbid should be back to 50 wGCDs`);
             expect(weiToEther(balance)*1).to.be.equal(50);
 
             balance = await this.mockERC20.balanceOf(bidder3);
             console.log(`
-            *Bidder3's wFTM balance after bidding should be 20`);
+            *Bidder3's wGCD balance after bidding should be 20`);
             expect(weiToEther(balance)*1).to.be.equal(20);
 
             console.log(`
@@ -393,12 +393,12 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             result = await this.gtonShopAuction.resultAuction(this.gtonShopNFT.address, new BN('1'), {from : artist});
 
             console.log(`
-            *As the platformFee is 2.5%, the platform fee recipient should get 2.5% of (30 - 20) which is 0.25 wFTM.`);
+            *As the platformFee is 2.5%, the platform fee recipient should get 2.5% of (30 - 20) which is 0.25 wGCD.`);
             balance = await this.mockERC20.balanceOf(platformFeeRecipient);
             expect(weiToEther(balance)*1).to.be.equal(0.25);
 
             console.log(`
-            *The artist should get 29.75 wFTM.`);
+            *The artist should get 29.75 wGCD.`);
             balance = await this.mockERC20.balanceOf(artist);
             expect(weiToEther(balance)*1).to.be.equal(29.75);
             
@@ -432,8 +432,8 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             console.log(`
             Scenario 3:
             An artist mints two NFTs from him/herself
-            He/She then put them on the marketplace as bundle price of 20 wFTMs
-            A buyer then buys them for 20 wFTMs`);
+            He/She then put them on the marketplace as bundle price of 20 wGCDs
+            A buyer then buys them for 20 wGCDs`);
 
             let balance = await this.gtonShopNFT.platformFee();
             console.log(`
@@ -441,11 +441,11 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             let balance1 = await web3.eth.getBalance(artist);
             console.log(`
-            FTM balance of artist before minting: ${weiToEther(balance1)}`);
+            GCD balance of artist before minting: ${weiToEther(balance1)}`);
 
             let balance2 = await web3.eth.getBalance(platformFeeRecipient);
             console.log(`
-            FTM balance of the fee recipient before minting: ${weiToEther(balance2)}`);
+            GCD balance of the fee recipient before minting: ${weiToEther(balance2)}`);
 
             console.log(`
             Now minting the first NFT...`);
@@ -487,21 +487,21 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
 
             let balance3 = await web3.eth.getBalance(artist);
             console.log(`
-            FTM balance of artist after minting: ${weiToEther(balance3)}`);
+            GCD balance of artist after minting: ${weiToEther(balance3)}`);
 
             let balance4 = await web3.eth.getBalance(platformFeeRecipient);
             console.log(`
-            FTM balance of recipient after minting: ${weiToEther(balance4)}`);
+            GCD balance of recipient after minting: ${weiToEther(balance4)}`);
 
             console.log(`
-            *The difference of the artist's FTM balance should be more than ${2*PLATFORM_FEE} FTMs as 
-            the platform fee is ${PLATFORM_FEE} FTM and minting costs some gases
-            but should be less than ${PLATFORM_FEE + 1} FTM as the gas fees shouldn't be more than 1 FTM`);
+            *The difference of the artist's GCD balance should be more than ${2*PLATFORM_FEE} GCDs as 
+            the platform fee is ${PLATFORM_FEE} GCD and minting costs some gases
+            but should be less than ${PLATFORM_FEE + 1} GCD as the gas fees shouldn't be more than 1 GCD`);
             expect(weiToEther(balance1)*1 - weiToEther(balance3)*1).to.be.greaterThan(PLATFORM_FEE*2);
             expect(weiToEther(balance1)*1 - weiToEther(balance3)*1).to.be.lessThan(PLATFORM_FEE*2 + 1);
 
             console.log(`
-            *The difference of the recipients's FTM balance should be ${PLATFORM_FEE*2} FTMs as the platform fee is ${PLATFORM_FEE} FTMs `);
+            *The difference of the recipients's GCD balance should be ${PLATFORM_FEE*2} GCDs as the platform fee is ${PLATFORM_FEE} GCDs `);
             expect(weiToEther(balance4)*1 - weiToEther(balance2)*1).to.be.equal(PLATFORM_FEE*2);            
 
             console.log(`
@@ -509,7 +509,7 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             await this.gtonShopNFT.setApprovalForAll(this.gtonShopBundleMarketplace.address, true, {from: artist});
 
             console.log(`
-            The artist lists the 2 nfts in the bundle market with price 20 wFTM and 
+            The artist lists the 2 nfts in the bundle market with price 20 wGCD and 
             starting time 2021-09-22 10:00:00 GMT`);
             await this.gtonShopBundleMarketplace.listItem(
                     'mynfts',
@@ -538,15 +538,15 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             expect(listing.startingTime.toString()).to.be.equal('1632304800');
 
             console.log(`
-            Mint 50 wFTMs to buyer so he can buy the two nfts`);
+            Mint 50 wGCDs to buyer so he can buy the two nfts`);
             await this.mockERC20.mint(buyer, ether('50'));
 
             console.log(`
-            The buyer approves GTONShopBundleMarketplace to transfer up to 50 wFTM`);
+            The buyer approves GTONShopBundleMarketplace to transfer up to 50 wGCD`);
             await this.mockERC20.approve(this.gtonShopBundleMarketplace.address, ether('50'), {from: buyer});
 
             console.log(`
-            The buyer buys the nft for 20 wFTMs`);
+            The buyer buys the nft for 20 wGCDs`);
             result = await this.gtonShopBundleMarketplace.buyItem(
                 'mynfts', 
                 this.mockERC20.address, 
@@ -577,12 +577,12 @@ contract('Overall Test',  function ([owner, platformFeeRecipient, artist, buyer,
             expect(nftOwner).to.be.equal(buyer);
 
             console.log(`
-            *The artist's wFTM balance now should be 19 wTFM`);
+            *The artist's wGCD balance now should be 19 wTFM`);
             balance = await this.mockERC20.balanceOf(artist);
             expect(weiToEther(balance)*1).to.be.equal(19);
 
             console.log(`
-            *The platform fee recipient's wFTM balance now should be 1 wTFM`);
+            *The platform fee recipient's wGCD balance now should be 1 wTFM`);
             balance = await this.mockERC20.balanceOf(platformFeeRecipient);
             expect(weiToEther(balance)*1).to.be.equal(1);
 

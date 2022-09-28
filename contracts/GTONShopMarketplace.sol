@@ -63,7 +63,7 @@ interface IGTONShopTokenRegistry {
 }
 
 interface IGTONShopPriceFeed {
-    function wFTM() external view returns (address);
+    function wGCD() external view returns (address);
 
     function getPrice(address) external view returns (int256, uint8);
 }
@@ -680,7 +680,7 @@ contract GTONShopMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         );
 
         if (_payToken == address(0)) {
-            (unitPrice, decimals) = priceFeed.getPrice(priceFeed.wFTM());
+            (unitPrice, decimals) = priceFeed.getPrice(priceFeed.wGCD());
         } else {
             (unitPrice, decimals) = priceFeed.getPrice(_payToken);
         }
