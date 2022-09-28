@@ -11,10 +11,12 @@ const {
   const {expect} = require('chai');
 
   const GTONShopNFT = artifacts.require('GTONShopNFT');
-  const GTONShopAuction = artifacts.require('GTONShopAuctionMock');
+  const GTONShopAuction = artifacts.require('MockGTONShopAuction');
   const GTONShopAuctionReal = artifacts.require('GTONShopAuction');
   const BiddingContractMock = artifacts.require('BiddingContractMock');
   const MockERC20 = artifacts.require('MockERC20');
+
+  const PLATFORM_FEE = '2';
   
   contract('GTONShopAuction', (accounts) => {
     const [admin, smartContract, platformFeeAddress, minter, owner, designer, bidder, bidder2, provider] = accounts;
@@ -28,7 +30,11 @@ const {
     const randomTokenURI = 'rand';
   
     beforeEach(async () => {  
-      this.token = await GTONShopNFT.new({ from: admin });
+      this.token = await GTONShopNFT.new(
+        platformFeeAddress,
+        PLATFORM_FEE,
+        { from: admin }
+      );
   
       this.mockToken = await MockERC20.new(
         'Mock ERC20',
@@ -37,10 +43,8 @@ const {
         {from: minter}
       );
   
-      this.auction = await GTONShopAuction.new(
-        platformFeeAddress,
-        {from: admin}
-      );
+      this.auction = await GTONShopAuction.new();
+      await this.auction.initialize(platformFeeAddress);
 
       await this.token.setApprovalForAll(this.auction.address, true, {from: minter});
       await this.token.setApprovalForAll(this.auction.address, true, {from: admin});
@@ -48,10 +52,10 @@ const {
   
     describe('Contract deployment', () => {  
       it('Reverts when platform fee recipient is zero', async () => {
+        let auction = await GTONShopAuction.new()
         await expectRevert(
-          GTONShopAuction.new(
-            constants.ZERO_ADDRESS,
-            {from: admin}
+          auction.initialize(
+            constants.ZERO_ADDRESS
           ),
           "GTONShopAuction: Invalid Platform Fee Recipient"
         );

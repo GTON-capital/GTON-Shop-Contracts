@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/GSN/Context.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract GTONShopNFT is ERC721("GTONShopNFT", "ART"), Ownable {
+contract GTONShopNFT is ERC721("GTONShopNFT", "GShop"), Ownable {
 
     /// @dev Events of the contract
     event Minted(

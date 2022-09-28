@@ -12,6 +12,8 @@ const { expect } = require('chai');
 const GTONShopNFT = artifacts.require('GTONShopNFT');
 const GTONShopMarketplace = artifacts.require('GTONShopMarketplace');
 
+const PLATFORM_FEE = '2';
+
 contract('Core ERC721 tests for GTONShopNFT', function ([
     owner,
     minter,
@@ -30,7 +32,11 @@ contract('Core ERC721 tests for GTONShopNFT', function ([
     const randomTokenURI = 'ipfs';
   
     beforeEach(async function () {
-      this.nft = await GTONShopNFT.new({ from: owner });
+      this.nft = await GTONShopNFT.new(
+        feeRecipient,
+        PLATFORM_FEE,
+        { from: owner }
+      );
       this.marketplace = await GTONShopMarketplace.new(
         '0xFC00FACE00000000000000000000000000000000',
         platformFee,

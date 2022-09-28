@@ -130,7 +130,7 @@ async function main(network) {
     const NFTTradable = await ethers.getContractFactory('GTONShopNFTTradable');
     const nft = await NFTTradable.deploy(
         'GTONShopNFT',
-        'ART',
+        'GShop',
         AUCTION_PROXY_ADDRESS,
         MARKETPLACE_PROXY_ADDRESS,
         BUNDLE_MARKETPLACE_PROXY_ADDRESS,
@@ -145,7 +145,7 @@ async function main(network) {
     );
     const nftPrivate = await NFTTradablePrivate.deploy(
         'IGTONShopNFT',
-        'IART',
+        'IGShop',
         AUCTION_PROXY_ADDRESS,
         MARKETPLACE_PROXY_ADDRESS,
         BUNDLE_MARKETPLACE_PROXY_ADDRESS,
