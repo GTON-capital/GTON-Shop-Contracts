@@ -8,8 +8,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract GTONShopAddressRegistry is Ownable {
     bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
 
-    /// @notice Artion contract
-    address public artion;
+    /// @notice GTONShopNFT contract
+    address public gtonShopNFT;
 
     /// @notice GTONShopAuction contract
     address public auction;
@@ -39,15 +39,15 @@ contract GTONShopAddressRegistry is Ownable {
     address public priceFeed;
 
     /**
-     @notice Update artion contract
+     @notice Update gtonShopNFT contract
      @dev Only admin
      */
-    function updateArtion(address _artion) external onlyOwner {
+    function updateGTONShopNFT(address _gtonShopNFT) external onlyOwner {
         require(
-            IERC165(_artion).supportsInterface(INTERFACE_ID_ERC721),
+            IERC165(_gtonShopNFT).supportsInterface(INTERFACE_ID_ERC721),
             "Not ERC721"
         );
-        artion = _artion;
+        gtonShopNFT = _gtonShopNFT;
     }
 
     /**

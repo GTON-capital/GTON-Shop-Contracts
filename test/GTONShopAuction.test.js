@@ -10,7 +10,7 @@ const {
   
   const {expect} = require('chai');
 
-  const GTONShopNFT = artifacts.require('GTONShopNifty');
+  const GTONShopNFT = artifacts.require('GTONShopNFT');
   const GTONShopAuction = artifacts.require('GTONShopAuctionMock');
   const GTONShopAuctionReal = artifacts.require('GTONShopAuction');
   const BiddingContractMock = artifacts.require('BiddingContractMock');

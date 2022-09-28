@@ -8,7 +8,7 @@ const {
 async function main() {
   const NFTTradable = await ethers.getContractFactory('GTONShopNFTTradable');
   const nft = await NFTTradable.deploy(
-    'Artion',
+    'GTONShopNFT',
     'ART',
     AUCTION,
     MARKETPLACE,
@@ -23,7 +23,7 @@ async function main() {
     'GTONShopNFTTradablePrivate'
   );
   const nftPrivate = await NFTTradablePrivate.deploy(
-    'IArtion',
+    'IGTONShopNFT',
     'IART',
     AUCTION,
     MARKETPLACE,

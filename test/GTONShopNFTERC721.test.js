@@ -8,9 +8,9 @@ const { ZERO_ADDRESS } = constants
 
 const { expect } = require('chai')
 
-const GTONShopNifty = artifacts.require('GTONShopNifty')
+const GTONShopNFT = artifacts.require('GTONShopNFT')
 
-contract('Core ERC721 tests for GTONShopNifty', function ([
+contract('Core ERC721 tests for GTONShopNFT', function ([
   owner,
   minter,
   approved,
@@ -31,7 +31,7 @@ contract('Core ERC721 tests for GTONShopNifty', function ([
   const randomTokenURI = 'ipfs'
 
   beforeEach(async function () {
-    this.token = await GTONShopNifty.new({ from: owner })
+    this.token = await GTONShopNFT.new({ from: owner })
   })
 
   describe('metadata', function () {

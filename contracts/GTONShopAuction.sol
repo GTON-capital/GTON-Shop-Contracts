@@ -11,7 +11,7 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 interface IGTONShopAddressRegistry {
-    function artion() external view returns (address);
+    function gtonShopNFT() external view returns (address);
 
     function marketplace() external view returns (address);
 

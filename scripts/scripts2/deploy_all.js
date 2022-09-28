@@ -12,11 +12,11 @@ async function main(network) {
     const { TREASURY_ADDRESS, PLATFORM_FEE, WRAPPED_GCD_MAINNET, WRAPPED_GCD_TESTNET } = require('../constants');
   
     ////////////
-    const Artion = await ethers.getContractFactory('Artion');
-    const artion = await Artion.deploy(TREASURY_ADDRESS, '2000000000000000000');
+    const GTONShopNFT = await ethers.getContractFactory('GTONShopNFT');
+    const gtonShopNFT = await GTONShopNFT.deploy(TREASURY_ADDRESS, '2000000000000000000');
   
-    await artion.deployed();  
-    console.log('GTONShopArtion deployed at', artion.address);
+    await gtonShopNFT.deployed();  
+    console.log('GTONShopNFT deployed at', gtonShopNFT.address);
     ///////////
 
     //////////
@@ -129,7 +129,7 @@ async function main(network) {
     ////////
     const NFTTradable = await ethers.getContractFactory('GTONShopNFTTradable');
     const nft = await NFTTradable.deploy(
-        'Artion',
+        'GTONShopNFT',
         'ART',
         AUCTION_PROXY_ADDRESS,
         MARKETPLACE_PROXY_ADDRESS,
@@ -144,7 +144,7 @@ async function main(network) {
         'GTONShopNFTTradablePrivate'
     );
     const nftPrivate = await NFTTradablePrivate.deploy(
-        'IArtion',
+        'IGTONShopNFT',
         'IART',
         AUCTION_PROXY_ADDRESS,
         MARKETPLACE_PROXY_ADDRESS,
@@ -247,7 +247,7 @@ async function main(network) {
     
     await auction.updateAddressRegistry(GTON_SHOP_ADDRESS_REGISTRY);
     
-    await addressRegistry.updateArtion(artion.address);
+    await addressRegistry.updateGTONShopNFT(gtonShopNFT.address);
     await addressRegistry.updateAuction(auction.address);
     await addressRegistry.updateMarketplace(marketplace.address);
     await addressRegistry.updateBundleMarketplace(bundleMarketplace.address);

@@ -1,1 +1,1 @@
-# Smart contracts for GTONShop Artion Marketplace
+# Smart contracts for GTONShop NFT Marketplace

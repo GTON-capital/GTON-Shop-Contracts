@@ -13,7 +13,7 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 interface IGTONShopAddressRegistry {
-    function artion() external view returns (address);
+    function gtonShopNFT() external view returns (address);
 
     function bundleMarketplace() external view returns (address);
 
@@ -655,7 +655,7 @@ contract GTONShopMarketplace is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function _isGTONShopNFT(address _nftAddress) internal view returns (bool) {
         return
-            addressRegistry.artion() == _nftAddress ||
+            addressRegistry.gtonShopNFT() == _nftAddress ||
             IGTONShopNFTFactory(addressRegistry.factory()).exists(_nftAddress) ||
             IGTONShopNFTFactory(addressRegistry.privateFactory()).exists(
                 _nftAddress
