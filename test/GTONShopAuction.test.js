@@ -66,11 +66,11 @@ const {
   
       describe('validation', async () => {
         beforeEach(async () => {
-          await this.token.mint(minter, randomTokenURI, {from: minter});
+          await this.token.mint(minter, randomTokenURI, {from: minter, value: ether(PLATFORM_FEE)});
         });
   
-        it('fails if endTime is in the past', async () => {
-          await this.auction.setNowOverride('12');
+        it.only('fails if endTime is in the past', async () => {
+          await this.auction.setTime('12');
           await expectRevert(
             this.auction.createAuction(this.token.address, TOKEN_ONE_ID, '1', '0', '10', {from: minter}),
             "GTONShopAuction.createAuction: End time passed. Nobody can bid."
